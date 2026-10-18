@@ -1,3 +1,4 @@
+
 name: Build Windows EXE
 
 on:
@@ -15,7 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -35,8 +37,10 @@ jobs:
           Copy-Item icon.ico dist/AutoReplayBuffer/icon.ico
           Compress-Archive -Path "dist/AutoReplayBuffer/*" -DestinationPath "AutoReplayBufferOBS-windows-x64.zip"
 
-      - name: Upload EXE package
+      - name: Upload ZIP directly
         uses: actions/upload-artifact@v4
         with:
           name: AutoReplayBufferOBS-windows-x64
           path: AutoReplayBufferOBS-windows-x64.zip
+          if-no-files-found: error
+          retention-days: 30
